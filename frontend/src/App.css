@@ -1,0 +1,56 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+/* .results {
+  background-color: brown;
+} */
+
+.Focus {
+  margin-left: 5%;
+  padding: 10px;
+  width: 90%;
+  /* display: block; */
+  border-style: solid;
+  margin-bottom: 100px;
+}
+
+.FocusContent {
+  width: 70%;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  /* float: left; */
+}
+
+.Related {
+  height: 100%;
+  width: 30%;
+  display: inline-block;
+}
+
+.Search {
+  width: 100%;
+  display: block;
+  margin-bottom: 50px;
+}
+
+.Subtitle {
+  color: grey;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+p.presult {
+  color: blue;
+  text-shadow: 1px 1px;
+  cursor: pointer;
+}
