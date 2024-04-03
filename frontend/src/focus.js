@@ -5,7 +5,7 @@ import Result from './result';
  * Component representing the section of a page displaying information reliant on currently focused
  * company.
  * 
- * @param {Array.<string>} target - The details of the company to be focused
+ * @param {Object} target - The details of the company to be focused
  * @param {Array.<string>} similar - A list of names of similar companies
  * @param {function} onClick - onClick handler
  */
