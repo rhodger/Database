@@ -12,9 +12,9 @@ import Result from './result';
 const Focus = ({target, similar, onClick}) => {
     return <div className="Focus">
         <div className="FocusContent">
-            <h2>{target[2]}</h2>
-            <h4 className="Subtitle" >{target[3]}, {target[9]}</h4>
-            <p>{target[6]}</p>
+            <h2>{target['company_name']}</h2>
+            <h4 className="Subtitle" >{target['industry']}, {target['country']}</h4>
+            <p>{target['about']}</p>
         </div>
         <div className="Related">
             <p>Related: {similar.map(x => {return <Result name={x} onClick={() => onClick(x)} />})}</p>

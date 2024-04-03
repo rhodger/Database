@@ -4,11 +4,81 @@ import time
 from urllib.parse import unquote
 from flask import Flask, json, request
 from flask_cors import CORS
+from pymongo import *
+from pymongo.client_session import *
+from pymongo.collection import Collection
 
+
+MONGO_HOST = '172.17.0.2'
+MONGO_PORT = 27017
 
 # Rows in csv for rendering load progress on slower machines
 TOTAL_LINES = 1628
 
+# MONGO ====================================================================== #
+# ============================================================================ #
+
+def insert_doc(collection: Collection, document: dict, verbose: bool = True):
+	if not collection.find_one(document):
+		collection.insert_one(document)
+	else:
+		if verbose:
+			print('failed to insert due to duplicate')
+
+client = MongoClient("mongodb://{}:{}/".format(MONGO_HOST, MONGO_PORT))
+print("Connected")
+
+# DEBUG - remove for production #
+# print('deleting companies collection..')
+# client.company_database.drop_collection('companies')
+
+try:
+	print('creating companies collection..')
+	client.company_database.create_collection('companies', validator={
+		'$jsonSchema': {
+			'properties': {
+				'_id': {}, 
+				'linkedin_url': {},
+				'company_name': {}, 
+				'industry': {},
+				'website': {},
+				'tagline': {},
+				'about': {},
+				'year_founded': {},
+				'locality': {},
+				'country': {},
+				'current_employee_estimate': {},
+				'keywords': {}
+			},
+			'required': [
+				'_id', 'linkedin_url' , 'company_name', 'industry', 'website', 'tagline', 'about',
+				'year_founded', 'locality', 'country', 'current_employee_estimate', 'keywords'
+			],
+			'additionalProperties': False,
+		}
+	})
+except Exception as e:
+	print('failed to create companies collection: {}'.format(e))
+
+with open('./companies_data.csv') as csvfile:
+	csvreader = csv.reader(csvfile)
+	headers = []
+	content = []
+	for row in csvreader:
+		if headers == []:
+			headers = row
+			headers[0] = '_id'
+		else:
+			content.append(row)
+
+for row in content:
+	doc = {}
+	for i in range(len(headers)):
+		doc[headers[i]] = row[i]
+	insert_doc(client.company_database.companies, doc, verbose=True)
+
+# CSV ======================================================================== #
+# ============================================================================ #
 
 def load(filename: str) -> dict[str, list[str]]:
     """Loads names and keywords from the provided csv.
@@ -37,12 +107,8 @@ def load(filename: str) -> dict[str, list[str]]:
 
 def retrieve_profile(filename: str, target: str) -> list[str]:
         """Retrieves the full data for a given entry."""
-        
-        with open(filename, newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[2] == target:
-                    return row
+
+        return client.company_database.companies.find_one({'company_name': target})
 
 def search(term: str, data: list[str], min: int = 75) -> list[str]:
     """Finds the most relevant matches for a given company name.

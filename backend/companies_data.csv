@@ -1,4 +1,4 @@
-,linkedin url,company_name,industry,website,tagline,about,year founded,locality,country,current employee estimate,keywords
+,linkedin_url,company_name,industry,website,tagline,about,year_founded,locality,country,current_employee_estimate,keywords
 0,linkedin.com/company/ibm,IBM,IT Services and IT Consulting,http://www.ibm.com,,"At IBM, we do more than work. We create. We create as technologists, developers, and engineers. We create with our partners. We create with our competitors. If you're searching for ways to make the world work better through technology and infrastructure, software and consulting, then we want to work with you.
 
 We're here to help every creator turn their ""what if"" into what is. Let's create something that will change everything.",1911.0,"new york, new york, united states",united states,274047,"ibm,technologists,developers,engineers,technology"
