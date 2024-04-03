@@ -8,6 +8,7 @@ import Focus from './focus';
 function App() {
   const [focus, setFocus] = useState("");
   const [similar, setSimilar] = useState([]);
+  const HOST = 'api';
 
 
   /**
@@ -23,14 +24,16 @@ function App() {
     const encoded_name = encodeURIComponent(name);
 
     // Retrieve full company details
-    fetch(`http://localhost:3068/api/retrieve?name=${encoded_name}`).then(async response => {
+    fetch(`http://${HOST}:3068/api/retrieve?name=${encoded_name}`).then(async response => {
         const rbody = await response.json();
+        console.log('got info');
         setFocus(rbody);
     });
 
     // Retrieve similar companies
-    fetch(`http://localhost:3068/api/similar?name=${encoded_name}`).then(async response => {
+    fetch(`http://${HOST}:3068/api/similar?name=${encoded_name}`).then(async response => {
         const rbody = await response.json();
+        console.log('got similar');
         setSimilar(rbody);
     });
   };

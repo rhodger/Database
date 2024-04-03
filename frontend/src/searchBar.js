@@ -32,8 +32,9 @@ const SearchBar = ({onChange}) => {
         const new_value = encodeURIComponent(readable_value);
 
         // Retrieve search results for updated value
-        fetch(`http://localhost:3068/api/search?name=${new_value}`).then(async response => {
+        fetch(`http://api:3068/api/search?name=${new_value}`, {method: 'get', mode: 'cors'}).then(async response => {
             const rbody = await response.json();
+            console.log('got results');
             setResults(rbody.map(x => {
                 return <Result name={x} onClick={() => changeFocus(x)} />;
             }));

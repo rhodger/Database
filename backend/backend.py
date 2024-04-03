@@ -2,8 +2,8 @@ import csv
 from thefuzz import process, fuzz
 import time
 from urllib.parse import unquote
-from flask import Flask, json, request
-from flask_cors import CORS
+from flask import Flask, json, request, make_response
+from flask_cors import CORS, cross_origin
 
 
 # Rows in csv for rendering load progress on slower machines
@@ -121,10 +121,13 @@ company_data = load('companies_data.csv')
 # Initialize http server and basic CORS handling
 api = Flask(__name__)
 CORS(api)
+# api.config['CORS_HEADERS'] = 'Content-Type'
 
 @api.route('/api/retrieve', methods=['GET'])
 def api_retrieve():
     """Endpoint for retrieving a specific entry in full detail"""
+
+    api.logger.debug('retrieve')
 
     # Retrieve querystring arg and remove percent encoding
     company_name = unquote(request.args.get('name'))
@@ -136,9 +139,12 @@ def api_retrieve():
 
     return json.dumps(data)
 
-@api.route('/api/search', methods=['GET'])
+@api.route('/api/search', methods=['GET', 'POST'])
+# @cross_origin
 def api_search():
     """Endpoint for searching for a string in entry names."""
+
+    api.logger.debug('search')
 
     global company_data
 
@@ -149,11 +155,17 @@ def api_search():
     data = search(company_name, company_data.keys())
     api.logger.debug('Completed search')
 
+    #debug#
+    return json.dumps({'cont': 'words here'})
+
     return json.dumps(data)
 
 @api.route('/api/similar', methods=['GET'])
 def api_similar():
     """Endpoint for retrieving similar entries in database."""
+
+    api.logger.debug('similar')
+
     global company_data
 
     # Retrieve querystring arg and remove percent encoding
@@ -161,6 +173,10 @@ def api_similar():
 
     results = find_similar(search(company_name, company_data.keys())[0], company_data, 70)
     return json.dumps([x[0] for x in results])
+
+@api.route('/', methods=['GET'])
+def test_up():
+    return 'up'
 
 # Start server listening on localhost:3068
 if __name__ == '__main__':
