@@ -54,3 +54,9 @@ p.presult {
   text-shadow: 1px 1px;
   cursor: pointer;
 }
+
+p.presult:hover {
+  color: lightblue;
+  text-shadow: 1px 1px;
+  cursor: pointer;
+}

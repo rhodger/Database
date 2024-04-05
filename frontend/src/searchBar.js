@@ -16,6 +16,8 @@ const SearchBar = ({onChange}) => {
      * @param {string} name - Pass changed focus up
      */
     const changeFocus = (name) => {
+        setContent("");
+        setResults([]);
         onChange(name);
     }
 

@@ -10,16 +10,18 @@ import Result from './result';
  * @param {function} onClick - onClick handler
  */
 const Focus = ({target, similar, onClick}) => {
-    return <div className="Focus">
-        <div className="FocusContent">
-            <h2>{target['company_name']}</h2>
-            <h4 className="Subtitle" >{target['industry']}, {target['country']}</h4>
-            <p>{target['about']}</p>
+    return (
+        <div className="Focus">
+            <div className="FocusContent">
+                <h2>{target['company_name']}</h2>
+                <h4 className="Subtitle" >{target['industry']}, {target['country']}</h4>
+                <p>{target['about']}</p>
+            </div>
+            <div className="Related">
+                <p>Related: {similar.map(x => {return <Result name={x} onClick={() => onClick(x)} />})}</p>
+            </div>
         </div>
-        <div className="Related">
-            <p>Related: {similar.map(x => {return <Result name={x} onClick={() => onClick(x)} />})}</p>
-        </div>
-    </div>
+    )
 }
 
 export default Focus;

@@ -9,7 +9,10 @@ def load(collection) -> dict[str, list[str]]:
 
     all_docs = {}
     for doc in collection.find({}, {'company_name': 1, 'industry': 1, 'country': 1, 'keywords': 1}):
-        all_docs[doc['company_name']] = doc['company_name'] + ',' + doc['industry'] + ',' + doc['country'] + ',' + doc['keywords']
+        all_docs[doc['company_name']] = doc['company_name'] \
+                                + ',' + doc['industry'] \
+                                + ',' + doc['country'] \
+                                + ',' + doc['keywords'] 
 
     return all_docs
 
